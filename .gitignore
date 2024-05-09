@@ -1,4 +1,2 @@
-# sbteclipse plugin
-target/
+target
 .gitignore
-README.md

@@ -1,0 +1,16 @@
+package org.social.repository;
+
+import org.social.dto.response.PostResponse;
+import org.social.entities.Post;
+import org.social.entities.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@Repository
+public interface PostRepository extends JpaRepository<Post, Long> {
+
+    List<Post> findPostByUser(User foundUser);
+}

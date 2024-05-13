@@ -32,17 +32,20 @@ public class LikeRestController {
     }
 
     @PostMapping("/post/{username}/{postId}")
-    public LikePostResponse createLikeByPostId(@PathVariable String username, @PathVariable Long postId) {
+    public LikePostResponse createLikeByPostId(@PathVariable String username,
+                                               @PathVariable Long postId) {
         return likeService.createLikeByPostId(username, postId);
     }
 
     @PostMapping("/comment/{username}/{commentId}")
-    public LikeCommentResponse createLikeByCommentId(@PathVariable String username, @PathVariable Long commentId) {
+    public LikeCommentResponse createLikeByCommentId(@PathVariable String username,
+                                                     @PathVariable Long commentId) {
         return likeService.createLikeByCommentId(username, commentId);
     }
 
     @DeleteMapping("/psot/{username}/{postId}/{likeId}")
-    public ResponseEntity<String> deleteLikeByLikeId(@PathVariable String username, @PathVariable Long postId, @PathVariable Long likeId) {
+    public ResponseEntity<String> deleteLikeByLikeId(@PathVariable String username,
+                                                     @PathVariable Long postId, @PathVariable Long likeId) {
         if (likeService.deleteLikeByLikeId(username, postId, likeId)) {
             return ResponseEntity.ok("Successfully deleted like");
         } else {
@@ -51,7 +54,9 @@ public class LikeRestController {
     }
 
     @DeleteMapping("comment/{username}/{commentId}/{likeId}")
-    public ResponseEntity<String> deleteLikeByCommentId(@PathVariable String username, @PathVariable Long commentId, @PathVariable Long likeId) {
+    public ResponseEntity<String> deleteLikeByCommentId(@PathVariable String username,
+                                                        @PathVariable Long commentId,
+                                                        @PathVariable Long likeId) {
         if (likeService.deleteLikeByCommentId(username, commentId, likeId)) {
             return ResponseEntity.ok("Successfully deleted like");
         } else {

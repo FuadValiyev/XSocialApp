@@ -1,11 +1,8 @@
 package org.social.dto.response;
 
-
-import org.apache.coyote.Response;
 import org.social.entities.Post;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public record PostResponse(Long postId,
                            String username,
@@ -13,6 +10,9 @@ public record PostResponse(Long postId,
                            LocalDateTime postDate) {
 
     public static PostResponse convertPostToPostResponse(Post post) {
-        return new PostResponse(post.getPostId(), post.getUser().getUsername(), post.getPostText(), post.getPostDate());
+        return new PostResponse(
+                post.getPostId(),
+                post.getUser().getUsername(),
+                post.getPostText(), post.getPostDate());
     }
 }

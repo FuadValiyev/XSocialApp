@@ -32,7 +32,8 @@ public class UserRestController {
     }
 
     @PutMapping("/{username}")
-    public UserResponse updateUser(@PathVariable String username, @RequestBody UserRequest requestBody) {
+    public UserResponse updateUser(@PathVariable String username,
+                                   @RequestBody UserRequest requestBody) {
         return userService.updateUserByUsername(username, requestBody);
     }
 

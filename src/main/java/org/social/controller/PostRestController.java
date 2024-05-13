@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -29,12 +28,14 @@ public class PostRestController {
     }
 
     @PostMapping("/{username}/creat")
-    public PostResponse createPostByUser(@PathVariable String username, @RequestBody PostRequest postRequest){
+    public PostResponse createPostByUser(@PathVariable String username,
+                                         @RequestBody PostRequest postRequest){
         return postService.createPostByUser(username, postRequest);
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<Object> updatePost(@PathVariable Long postId, @RequestBody PostRequest postRequest){
+    public ResponseEntity<Object> updatePost(@PathVariable Long postId,
+                                             @RequestBody PostRequest postRequest){
         return ResponseEntity.ok(postService.updatePost(postId, postRequest));
     }
 

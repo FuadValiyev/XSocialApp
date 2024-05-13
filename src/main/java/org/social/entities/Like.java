@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -16,19 +16,17 @@ public class Like {
 
     @NotNull
     @Column(columnDefinition = "TIMESTAMP")
-    private LocalDate likeDate;
+    private LocalDateTime likeDate;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "comment_id")
     private Comment comment;

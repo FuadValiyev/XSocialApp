@@ -12,12 +12,12 @@ import org.social.repository.CommentRepository;
 import org.social.repository.LikeRepository;
 import org.social.repository.PostRepository;
 import org.social.repository.UserRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.social.Utilities.Utility.IllegalArgException;
 
 @Service
 @RequiredArgsConstructor
@@ -49,8 +49,8 @@ public class LikeService {
 
     @Transactional
     public LikePostResponse createLikeByPostId(String username, Long postId) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username + " not found"));
-        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(postId + " not found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> IllegalArgException(username));
+        Post post = postRepository.findById(postId).orElseThrow(() -> IllegalArgException(postId));
         Like like = new Like();
         like.setUser(user);
         like.setPost(post);
@@ -61,8 +61,8 @@ public class LikeService {
 
     @Transactional
     public LikeCommentResponse createLikeByCommentId(String username, Long commentId) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username + " not found"));
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException(commentId + " not found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> IllegalArgException(username));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> IllegalArgException(commentId));
         Like like = new Like();
         like.setUser(user);
         like.setComment(comment);
@@ -73,8 +73,8 @@ public class LikeService {
 
     @Transactional
     public Boolean deleteLikeByLikeId(String username, Long postId, Long likeId) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username + " not found"));
-        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(postId + " not found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> IllegalArgException(username));
+        Post post = postRepository.findById(postId).orElseThrow(() -> IllegalArgException(postId));
         if (username.equals(user.getUsername()) && postId.equals(post.getPostId())) {
             likeRepository.deleteById(likeId);
             return true;
@@ -84,8 +84,8 @@ public class LikeService {
 
     @Transactional
     public boolean deleteLikeByCommentId(String username, Long commentId, Long likeId) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username + " not found"));
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException(commentId + " not found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> IllegalArgException(username));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> IllegalArgException(commentId));
         if (username.equals(user.getUsername()) && commentId.equals(comment.getCommentId())) {
             likeRepository.deleteById(likeId);
             return true;

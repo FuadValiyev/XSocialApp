@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.social.Utilities.Utility.IllegalArgException;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -62,7 +64,6 @@ public class UserService {
     }
 
     private User findUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException(username + " is not found"));
+        return userRepository.findByUsername(username).orElseThrow(() -> IllegalArgException(username));
     }
 }

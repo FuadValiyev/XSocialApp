@@ -11,14 +11,6 @@ public record UserRequest(String username,
                           String password,
                           LocalDate birthday) {
 
-//    public static User userRequestForUpdate(UserRequest userRequest){
-//        User user = new User();
-//        user.setName(userRequest.name);
-//        user.setSurname(userRequest.surname);
-//        user.setBirthday(userRequest.birthday);
-//        return user;
-//    }
-
     public static User convertUserRequestToUser(UserRequest userRequest){
         User user = new User();
         user.setUsername(userRequest.username);

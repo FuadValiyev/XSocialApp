@@ -9,12 +9,13 @@ import org.social.entities.User;
 import org.social.repository.PostRepository;
 import org.social.repository.UserRepository;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.social.Utilities.Utility.IllegalArgException;
 
 @Service
 @RequiredArgsConstructor
@@ -47,22 +48,21 @@ public class PostService {
     }
 
     private User findUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException(username + " is not found"));
+        return userRepository.findByUsername(username).orElseThrow(() -> IllegalArgException(username));
     }
 
     @Transactional
     public PostResponse updatePost(Long postId, PostRequest postRequest) {
-        Post foundPost = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(postId + " not found"));
-        Optional.ofNullable(postRequest.postText()).ifPresent(foundPost::setPostText);
-        Post savedPost = postRepository.save(foundPost);
+        Post post = postRepository.findById(postId).orElseThrow(() -> IllegalArgException(postId));
+        Optional.ofNullable(postRequest.postText()).ifPresent(post::setPostText);
+        Post savedPost = postRepository.save(post);
         return PostResponse.convertPostToPostResponse(savedPost);
     }
 
     public Boolean deletePostByPostId(Long postId) {
         try {
-            Post foundPost = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(postId + " not found"));
-            postRepository.delete(foundPost);
+            Post post = postRepository.findById(postId).orElseThrow(() -> IllegalArgException(postId));
+            postRepository.delete(post);
             return true;
         } catch (Exception ex) {
             return false;

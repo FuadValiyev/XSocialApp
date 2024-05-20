@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static org.social.Utilities.Utility.IllegalArgException;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -24,21 +26,21 @@ public class CommentService {
     private final UserRepository userRepository;
 
     public List<CommentResponse> getAllCommentsByPostId(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(postId + " not found"));
+        Post post = postRepository.findById(postId).orElseThrow(() -> IllegalArgException(postId));
         List<Comment> comments = commentRepository.findByPost(post);
         return comments.stream().map(CommentResponse::convertCommentToCommentResponse).toList();
     }
 
     public List<CommentResponse> getAllCommentsByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username + " not found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> IllegalArgException(username));
         List<Comment> comments = commentRepository.findByUser(user);
         return comments.stream().map(CommentResponse::convertCommentToCommentResponse).toList();
     }
 
     @Transactional
     public CommentResponse createComment(String username, Long postId, CommentRequest commentRequest) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username + " not found"));
-        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(postId + " not found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> IllegalArgException(username));
+        Post post = postRepository.findById(postId).orElseThrow(() -> IllegalArgException(postId));
         Comment comment = CommentRequest.covertCommentToCommentRequest(commentRequest);
         comment.setUser(user);
         comment.setPost(post);
@@ -48,9 +50,9 @@ public class CommentService {
 
     @Transactional
     public CommentResponse updateComment(String username, Long postId, Long commentId, CommentRequest commentRequest) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username + " not found"));
-        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(postId + " not found"));
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException(commentId + " not found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> IllegalArgException(username));
+        Post post = postRepository.findById(postId).orElseThrow(() -> IllegalArgException(postId));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> IllegalArgException(commentId));
         if (comment.getUser().equals(user) && comment.getPost().equals(post)) {
             Optional.ofNullable(commentRequest.commentText()).ifPresent(comment::setCommentText);
             Comment savedComment = commentRepository.save(comment);
@@ -61,9 +63,9 @@ public class CommentService {
 
     @Transactional
     public boolean deleteComment(String username, Long postId, Long commentId) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username + " not found"));
-        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(postId + " not found"));
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException(commentId + " not found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> IllegalArgException(username));
+        Post post = postRepository.findById(postId).orElseThrow(() -> IllegalArgException(postId));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> IllegalArgException(commentId));
         if (comment.getUser().equals(user) && comment.getPost().equals(post)) {
             commentRepository.delete(comment);
             return true;

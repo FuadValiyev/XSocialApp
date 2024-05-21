@@ -1,4 +1,4 @@
-package org.social.Utilities;
+package org.social.utilities;
 
 public class Utility {
 

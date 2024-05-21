@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.social.Utilities.Utility.IllegalArgException;
+import static org.social.utilities.Utility.IllegalArgException;
 
 @Service
 @RequiredArgsConstructor

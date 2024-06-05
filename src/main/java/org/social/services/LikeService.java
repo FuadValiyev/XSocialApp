@@ -16,8 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-import static org.social.utilities.Utility.IllegalArgException;
+import static org.social.utilities.ExceptionUtil.IllegalArgException;
 
 @Service
 @RequiredArgsConstructor
@@ -91,5 +92,12 @@ public class LikeService {
             return true;
         }
         return false;
+    }
+
+    public boolean isLiked(Long userId,Long postId){
+        User user = userRepository.findById(userId).orElseThrow(() -> IllegalArgException(userId));
+        Post post = postRepository.findById(postId).orElseThrow(() -> IllegalArgException(postId));
+        Optional<Like> like = likeRepository.findByUserAndPost(user,post);
+        return like.isPresent();
     }
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long likeId;
+    private Long likeId;
 
     @NotNull
     @Column(columnDefinition = "TIMESTAMP")

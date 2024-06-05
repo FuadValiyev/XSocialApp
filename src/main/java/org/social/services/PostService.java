@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.social.utilities.Utility.IllegalArgException;
+import static org.social.utilities.ExceptionUtil.IllegalArgException;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +29,11 @@ public class PostService {
     public List<PostResponse> getAllPost() {
         List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "postDate"));
         return posts.stream().map(PostResponse::convertPostToPostResponse).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Post getPostById(Long postId){
+        return postRepository.findById(postId).orElseThrow(()-> IllegalArgException(postId));
     }
 
     @Transactional

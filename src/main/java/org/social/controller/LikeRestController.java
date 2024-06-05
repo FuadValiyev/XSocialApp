@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.social.dto.response.LikeCommentResponse;
 import org.social.dto.response.LikePostResponse;
 import org.social.services.LikeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,7 @@ public class LikeRestController {
         return likeService.createLikeByCommentId(username, commentId);
     }
 
-    @DeleteMapping("/psot/{username}/{postId}/{likeId}")
+    @DeleteMapping("/post/{username}/{postId}/{likeId}")
     public ResponseEntity<String> deleteLikeByLikeId(@PathVariable String username,
                                                      @PathVariable Long postId, @PathVariable Long likeId) {
         if (likeService.deleteLikeByLikeId(username, postId, likeId)) {
@@ -62,5 +63,10 @@ public class LikeRestController {
         } else {
             return ResponseEntity.badRequest().body("Failed to delete like");
         }
+    }
+
+    @GetMapping("/isLiked")
+    public ResponseEntity<Boolean> isLiked(@RequestParam Long userId,@RequestParam Long postId){
+        return new ResponseEntity<>(likeService.isLiked(userId,postId), HttpStatus.OK);
     }
 }

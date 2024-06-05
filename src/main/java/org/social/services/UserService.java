@@ -4,7 +4,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.social.dto.request.UserRequest;
 import org.social.dto.response.UserResponse;
+import org.social.entities.Follow;
 import org.social.entities.User;
+import org.social.repository.FollowRepository;
 import org.social.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +14,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.social.utilities.Utility.IllegalArgException;
+import static org.social.utilities.ExceptionUtil.IllegalArgException;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
 
     @Transactional
     public UserResponse createUser(UserRequest userRequest) {
@@ -45,12 +48,12 @@ public class UserService {
         return UserResponse.convertUserToUserResponse(user);
     }
 
-    @Transactional(Transactional.TxType.SUPPORTS)
-    protected User updateUser(User foundUser, User requestUser) {
-        Optional.ofNullable(requestUser.getName()).ifPresent(foundUser::setName);
-        Optional.ofNullable(requestUser.getSurname()).ifPresent(foundUser::setSurname);
-        Optional.ofNullable(requestUser.getBirthday()).ifPresent(foundUser::setBirthday);
-        return foundUser;
+    @Transactional
+    public Boolean isFollowing(Long userId, Long followId) {
+        User user = userRepository.findById(userId).orElseThrow(()-> IllegalArgException(userId));
+        Follow follower = followRepository.findById(followId).orElseThrow(()-> IllegalArgException(followId));
+        Optional<Follow> follow = followRepository.findByUserAndUserFollow(user, follower);
+        return follow.isPresent();
     }
 
     public Boolean deleteUserByUsername(String username) {
@@ -63,7 +66,19 @@ public class UserService {
         }
     }
 
+    @Transactional(Transactional.TxType.SUPPORTS)
+    protected User updateUser(User foundUser, User requestUser) {
+        Optional.ofNullable(requestUser.getName()).ifPresent(foundUser::setName);
+        Optional.ofNullable(requestUser.getSurname()).ifPresent(foundUser::setSurname);
+        Optional.ofNullable(requestUser.getBirthday()).ifPresent(foundUser::setBirthday);
+        return foundUser;
+    }
+
     private User findUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> IllegalArgException(username));
+    }
+
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).get();
     }
 }

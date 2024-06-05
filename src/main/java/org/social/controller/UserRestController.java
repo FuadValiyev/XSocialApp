@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.social.dto.request.UserRequest;
 import org.social.dto.response.UserResponse;
 import org.social.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,11 @@ public class UserRestController {
         } else {
             return ResponseEntity.badRequest().body("an error");
         }
+    }
+
+    @GetMapping("/isFollowing")
+    public ResponseEntity<Boolean> isFollowing(@RequestParam Long userId, @RequestParam Long followId) {
+        return new ResponseEntity<>(userService.isFollowing(userId, followId), HttpStatus.OK);
     }
 
 }

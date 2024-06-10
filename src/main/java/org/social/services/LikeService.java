@@ -24,13 +24,13 @@ import static org.social.utilities.ExceptionUtil.IllegalArgException;
 @RequiredArgsConstructor
 public class LikeService {
 
-    public final LikeRepository likeRepository;
+    private final LikeRepository likeRepository;
 
-    public final PostRepository postRepository;
+    private final PostRepository postRepository;
 
-    public final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public final CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
 
 
     public List<LikePostResponse> getAllUserLikeByUsername(String username) {
